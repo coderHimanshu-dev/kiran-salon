@@ -7,7 +7,6 @@ import * as z from "zod";
 import { motion } from "framer-motion";
 import { Calendar, Clock, User, Phone, Mail, FileText, CheckCircle, AlertCircle, Loader2, MapPin, Sparkles } from "lucide-react";
 import { services, siteConfig } from "@/lib/data";
-import { supabase } from "@/lib/supabase";
 import { FadeIn } from "@/components/ui/Animations";
 import SectionHeading from "@/components/ui/SectionHeading";
 
@@ -35,21 +34,31 @@ export default function BookPage() {
     resolver: zodResolver(bookingSchema),
   });
 
-  const onSubmit = async (data: BookingFormValues) => {
+  const onSubmit = (data: BookingFormValues) => {
     setStatus("loading");
     try {
-      const { error } = await supabase.from('appointments').insert([data]);
-      if (error) {
-        // Fallback for missing env vars
-        console.warn('Supabase insert failed, showing success fallback', error);
-      }
+      const rawNumber = siteConfig.whatsapp || "";
+      const cleanNumber = rawNumber.replace(/\D/g, "");
+
+      const messageText = `Hello Kiran Beauty Salon, I would like to request an appointment.
+
+Details:
+- Name: ${data.name}
+- Phone: ${data.phone}
+- Email: ${data.email}
+- Service: ${data.service}
+- Date: ${data.date}
+- Time: ${data.time}
+${data.notes ? `- Notes: ${data.notes}` : ""}`;
+
+      const whatsappUrl = `https://wa.me/${cleanNumber}?text=${encodeURIComponent(messageText)}`;
+      window.open(whatsappUrl, "_blank");
+
       setStatus("success");
       reset();
     } catch (err) {
-      console.warn('Error during booking', err);
-      // Even if it fails entirely (like network error to supabase without keys), we show success fallback for demo
-      setStatus("success");
-      reset();
+      console.warn("WhatsApp redirect failed", err);
+      setStatus("error");
     }
   };
 

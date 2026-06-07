@@ -307,7 +307,6 @@ export default function ServicesPage() {
                       </div>
                     </FadeIn>
                   </div>
-                  </div>
                 </div>
               </div>
             </div>
