@@ -1,41 +1,31 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { LayoutDashboard, Calendar, Users, Scissors, Image as ImageIcon, LogOut, Menu, X, ChevronRight } from "lucide-react";
+import { LayoutDashboard, Calendar, Users, Scissors, Image as ImageIcon, LogOut, Menu, X } from "lucide-react";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
 
-  useEffect(() => {
-    const authStatus = localStorage.getItem("admin_authenticated");
-    if (authStatus === "true") {
-      setIsAuthenticated(true);
-    } else if (pathname !== "/admin/login") {
-      router.push("/admin/login");
-    }
-    setIsLoading(false);
-  }, [pathname, router]);
+  const handleLogout = async () => {
+    setIsLoggingOut(true);
 
-  const handleLogout = () => {
-    localStorage.removeItem("admin_authenticated");
-    setIsAuthenticated(false);
-    router.push("/admin/login");
+    try {
+      await fetch("/api/admin/logout", { method: "POST" });
+    } finally {
+      router.replace("/admin/login");
+      router.refresh();
+    }
   };
 
-  if (isLoading) return <div className="min-h-screen bg-[#0F0F0F] flex items-center justify-center"><div className="w-8 h-8 border-4 border-gold border-t-transparent rounded-full animate-spin" /></div>;
-
-  if (!isAuthenticated && pathname === "/admin/login") {
+  if (pathname === "/admin/login") {
     return <>{children}</>;
   }
-
-  if (!isAuthenticated) return null;
 
   const navLinks = [
     { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
@@ -74,9 +64,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </ul>
         </nav>
         <div className="p-4 border-t border-white/10">
-          <button onClick={handleLogout} className={`flex items-center w-full px-3 py-3 rounded-md text-red-400 hover:bg-white/5 transition-colors ${!isSidebarOpen && 'justify-center'}`}>
+          <button onClick={handleLogout} disabled={isLoggingOut} className={`flex items-center w-full px-3 py-3 rounded-md text-red-400 hover:bg-white/5 transition-colors disabled:opacity-60 disabled:cursor-not-allowed ${!isSidebarOpen && 'justify-center'}`}>
             <LogOut className="w-5 h-5 shrink-0" />
-            {isSidebarOpen && <span className="ml-3 font-medium text-sm">Logout</span>}
+            {isSidebarOpen && <span className="ml-3 font-medium text-sm">{isLoggingOut ? "Logging out..." : "Logout"}</span>}
           </button>
         </div>
       </aside>
@@ -111,9 +101,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </ul>
         </nav>
         <div className="p-4 border-t border-white/10">
-          <button onClick={handleLogout} className="flex items-center w-full px-3 py-3 rounded-md text-red-400 hover:bg-white/5 transition-colors">
+          <button onClick={handleLogout} disabled={isLoggingOut} className="flex items-center w-full px-3 py-3 rounded-md text-red-400 hover:bg-white/5 transition-colors disabled:opacity-60 disabled:cursor-not-allowed">
             <LogOut className="w-5 h-5 shrink-0" />
-            <span className="ml-3 font-medium text-sm">Logout</span>
+            <span className="ml-3 font-medium text-sm">{isLoggingOut ? "Logging out..." : "Logout"}</span>
           </button>
         </div>
       </aside>

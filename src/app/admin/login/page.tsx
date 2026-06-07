@@ -1,39 +1,42 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { Lock, Mail, Loader2, ArrowRight } from "lucide-react";
 
 export default function AdminLogin() {
-  const [email, setEmail] = useState("admin@kiranbeautysalon.com");
-  const [password, setPassword] = useState("admin123");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
-  useEffect(() => {
-    // If already logged in, redirect to admin
-    if (localStorage.getItem("admin_authenticated") === "true") {
-      router.push("/admin");
-    }
-  }, [router]);
-
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
     setIsLoading(true);
 
-    // Simulate authentication delay
-    setTimeout(() => {
-      if (email === "admin@kiranbeautysalon.com" && password === "admin123") {
-        localStorage.setItem("admin_authenticated", "true");
-        router.push("/admin");
-      } else {
-        setError("Invalid email or password");
+    try {
+      const response = await fetch("/api/admin/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (!response.ok) {
+        const data = (await response.json().catch(() => null)) as { message?: string } | null;
+        setError(data?.message ?? "Invalid email or password.");
         setIsLoading(false);
+        return;
       }
-    }, 1000);
+
+      router.replace("/admin");
+      router.refresh();
+    } catch {
+      setError("Unable to sign in. Please try again.");
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -74,6 +77,7 @@ export default function AdminLogin() {
                   onChange={(e) => setEmail(e.target.value)}
                   className="w-full bg-white/5 border border-white/10 text-white pl-10 pr-4 py-3 focus:outline-none focus:border-gold transition-colors"
                   placeholder="admin@kiranbeautysalon.com"
+                  autoComplete="username"
                   required
                 />
               </div>
@@ -85,6 +89,7 @@ export default function AdminLogin() {
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/40" />
                 <input 
                   type="password" 
+                  autoComplete="current-password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="w-full bg-white/5 border border-white/10 text-white pl-10 pr-4 py-3 focus:outline-none focus:border-gold transition-colors"

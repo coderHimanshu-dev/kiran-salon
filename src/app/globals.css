@@ -115,21 +115,114 @@ body {
   border-image: linear-gradient(135deg, #D4AF37, #E8D48B, #D4AF37) 1;
 }
 
-/* Luxury button styles */
+/* ===== PREMIUM FORM STYLES ===== */
+.form-input {
+  width: 100%;
+  padding: 14px 16px;
+  background: #FAFAF8;
+  border: 1.5px solid #E8DFD0;
+  border-radius: 12px;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--color-salon-text);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  outline: none;
+}
+
+.form-input::placeholder {
+  color: #AAAAAA;
+  font-weight: 300;
+}
+
+.form-input:hover {
+  border-color: #D4AF37aa;
+  background: #FFFFFF;
+}
+
+.form-input:focus {
+  border-color: #D4AF37;
+  background: #FFFFFF;
+  box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.12), 0 2px 8px rgba(212, 175, 55, 0.08);
+}
+
+.form-input.error {
+  border-color: #E53E3E;
+  box-shadow: 0 0 0 3px rgba(229, 62, 62, 0.1);
+}
+
+/* Select arrow styling */
+.form-select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23D4AF37' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 14px center;
+  background-repeat: no-repeat;
+  background-size: 18px;
+  padding-right: 44px;
+}
+
+/* Form label */
+.form-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-salon-text);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* ===== PREMIUM CARD STYLES ===== */
+.card-premium {
+  background: #FFFFFF;
+  border-radius: 20px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06), 0 1px 4px rgba(0, 0, 0, 0.04);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+}
+
+.card-premium:hover {
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.1), 0 4px 12px rgba(0, 0, 0, 0.06);
+  transform: translateY(-2px);
+}
+
+.card-dark {
+  background: linear-gradient(145deg, #151515 0%, #0F0F0F 100%);
+  border-radius: 20px;
+  border: 1px solid rgba(212, 175, 55, 0.15);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+}
+
+.card-gold {
+  background: linear-gradient(145deg, #D4AF37 0%, #C9A430 50%, #B8941E 100%);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(212, 175, 55, 0.25);
+  overflow: hidden;
+}
+
+/* ===== LUXURY BUTTON STYLES ===== */
 .btn-luxury {
   position: relative;
   overflow: hidden;
   background: linear-gradient(135deg, #D4AF37 0%, #E8D48B 50%, #D4AF37 100%);
   color: #0F0F0F;
   font-weight: 600;
-  padding: 14px 36px;
-  border-radius: 0;
+  padding: 12px 28px;
+  border-radius: 12px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   transition: all 0.4s ease;
   border: none;
   cursor: pointer;
+}
+
+@media (min-width: 640px) {
+  .btn-luxury {
+    padding: 14px 36px;
+    font-size: 0.85rem;
+  }
 }
 
 .btn-luxury::before {
@@ -157,6 +250,11 @@ body {
   transform: translateY(-2px);
 }
 
+.btn-luxury:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 20px rgba(212, 175, 55, 0.3);
+}
+
 /* Outlined luxury button */
 .btn-luxury-outline {
   position: relative;
@@ -164,14 +262,21 @@ body {
   background: transparent;
   color: #D4AF37;
   font-weight: 600;
-  padding: 14px 36px;
+  padding: 12px 28px;
   border: 2px solid #D4AF37;
-  border-radius: 0;
+  border-radius: 12px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   transition: all 0.4s ease;
   cursor: pointer;
+}
+
+@media (min-width: 640px) {
+  .btn-luxury-outline {
+    padding: 14px 36px;
+    font-size: 0.85rem;
+  }
 }
 
 .btn-luxury-outline:hover {
@@ -181,20 +286,59 @@ body {
   transform: translateY(-2px);
 }
 
+.btn-luxury-outline:active {
+  transform: translateY(0);
+}
+
+/* WhatsApp button style */
+.btn-whatsapp {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+  color: #FFFFFF;
+  font-weight: 600;
+  padding: 12px 28px;
+  border-radius: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  transition: all 0.4s ease;
+  border: none;
+  cursor: pointer;
+}
+
+@media (min-width: 640px) {
+  .btn-whatsapp {
+    padding: 14px 36px;
+    font-size: 0.85rem;
+  }
+}
+
+.btn-whatsapp:hover {
+  box-shadow: 0 8px 32px rgba(37, 211, 102, 0.35);
+  transform: translateY(-2px);
+}
+
 /* Section padding */
 .section-padding {
-  padding: 6rem 1.5rem;
+  padding: 4rem 1rem;
+}
+
+@media (min-width: 640px) {
+  .section-padding {
+    padding: 5rem 1.5rem;
+  }
 }
 
 @media (min-width: 768px) {
   .section-padding {
-    padding: 8rem 2rem;
+    padding: 6rem 2rem;
   }
 }
 
 @media (min-width: 1024px) {
   .section-padding {
-    padding: 10rem 4rem;
+    padding: 8rem 4rem;
   }
 }
 
@@ -217,6 +361,7 @@ body {
 .image-overlay {
   position: relative;
   overflow: hidden;
+  border-radius: 16px;
 }
 
 .image-overlay::after {
@@ -257,4 +402,213 @@ h1, h2, h3, h4, h5, h6, .font-heading {
 ::selection {
   background: rgba(212, 175, 55, 0.3);
   color: #0F0F0F;
+}
+
+/* ===== FLOATING BUTTONS POSITIONING ===== */
+/* Prevent overlap of WhatsApp and scroll-to-top on mobile */
+.floating-btn-right {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 50;
+}
+
+.floating-btn-left {
+  position: fixed;
+  bottom: 24px;
+  left: 24px;
+  z-index: 50;
+}
+
+@media (max-width: 640px) {
+  .floating-btn-right {
+    bottom: 20px;
+    right: 16px;
+  }
+  .floating-btn-left {
+    bottom: 20px;
+    left: 16px;
+  }
+}
+
+/* Hide scrollbar but keep scroll functionality */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* ===== RESPONSIVE UTILITIES ===== */
+@media (max-width: 640px) {
+  .hide-mobile {
+    display: none !important;
+  }
+}
+
+/* Smooth hover card effect */
+.hover-lift {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hover-lift:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
+}
+
+/* Premium testimonial card */
+.testimonial-card {
+  background: #FFFFFF;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.04);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.testimonial-card:hover {
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.08);
+  border-color: rgba(212, 175, 55, 0.2);
+  transform: translateY(-4px);
+}
+
+/* Service card image container */
+.service-image {
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+/* Gallery image */
+.gallery-image {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+/* Error message animation */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-4px); }
+  20%, 40%, 60%, 80% { transform: translateX(4px); }
+}
+
+.error-shake {
+  animation: shake 0.5s ease-in-out;
+}
+
+/* ===== BOOKING SIDEBAR PREMIUM STYLES ===== */
+.booking-sidebar {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 2rem !important; /* 32px gap between cards */
+}
+
+.booking-card {
+  padding: 2.5rem !important; /* Large, luxurious padding */
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+@media (max-width: 640px) {
+  .booking-card {
+    padding: 2rem !important; /* Slightly smaller on mobile but still spacious */
+  }
+}
+
+.booking-card-title {
+  font-family: var(--font-heading);
+  font-size: 1.5rem !important;
+  font-weight: 700 !important;
+  color: var(--color-gold) !important;
+  margin-bottom: 1.5rem !important;
+}
+
+.booking-card-list {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 1.5rem !important;
+  list-style: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.booking-card-item {
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 1.25rem !important;
+}
+
+.booking-card-icon-wrapper {
+  width: 2.5rem !important;
+  height: 2.5rem !important;
+  border-radius: 9999px !important;
+  background: rgba(212, 175, 55, 0.1) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
+}
+
+.booking-card-content {
+  min-width: 0 !important;
+}
+
+.booking-card-label {
+  font-weight: 600 !important;
+  color: #FFFFFF !important;
+  font-size: 0.875rem !important;
+  margin-bottom: 0.25rem !important;
+}
+
+.booking-card-text {
+  color: rgba(255, 255, 255, 0.5) !important;
+  font-size: 0.875rem !important;
+  line-height: 1.6 !important;
+  word-break: break-word !important;
+}
+
+.booking-card-link {
+  color: rgba(255, 255, 255, 0.5) !important;
+  font-size: 0.875rem !important;
+  line-height: 1.6 !important;
+  word-break: break-all !important;
+  text-decoration: none !important;
+  transition: color 0.3s ease !important;
+}
+
+.booking-card-link:hover {
+  color: var(--color-gold) !important;
+}
+
+/* Business Hours spacing */
+.hours-container {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 1rem !important;
+  width: 100% !important;
+}
+
+.hours-row {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+  padding-bottom: 1rem !important;
+}
+
+.hours-row:last-child {
+  border-bottom: none !important;
+  padding-bottom: 0 !important;
+}
+
+.hours-day {
+  color: rgba(255, 255, 255, 0.8) !important;
+  font-size: 0.95rem !important;
+}
+
+.hours-time {
+  font-weight: 600 !important;
+  color: var(--color-gold) !important;
+  font-size: 0.95rem !important;
 }

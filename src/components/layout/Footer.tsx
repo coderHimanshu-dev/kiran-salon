@@ -1,7 +1,8 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   MapPin,
   Phone,
@@ -16,6 +17,16 @@ const FacebookIcon = (props: any) => <svg viewBox="0 0 24 24" fill="none" stroke
 const YoutubeIcon = (props: any) => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M2.5 7.1C2.5 5.8 3.5 4.8 4.8 4.8h14.4c1.3 0 2.3 1 2.3 2.3v9.8c0 1.3-1 2.3-2.3 2.3H4.8A2.3 2.3 0 0 1 2.5 16.9V7.1z"/><path d="M9.8 14.2v-4.4l4.8 2.2-4.8 2.2z"/></svg>;
 
 export default function Footer() {
+  const [showScrollTop, setShowScrollTop] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollTop(window.scrollY > 400);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -26,12 +37,12 @@ export default function Footer() {
       <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-gold to-transparent" />
 
       {/* Main Footer */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-20">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8">
           {/* Brand Column */}
-          <div className="lg:col-span-1">
+          <div className="sm:col-span-2 lg:col-span-1">
             <Link href="/" className="flex items-center gap-3 mb-6">
-              <div className="w-12 h-12 border-2 border-gold flex items-center justify-center">
+              <div className="w-12 h-12 border-2 border-gold rounded-xl flex items-center justify-center">
                 <span className="font-heading text-gold text-xl font-bold">
                   K
                 </span>
@@ -45,11 +56,11 @@ export default function Footer() {
                 </p>
               </div>
             </Link>
-            <p className="text-white/60 text-sm leading-relaxed mb-6">
+            <p className="text-white/60 text-sm leading-relaxed mb-6 max-w-xs">
               Rajasthan&apos;s premier luxury beauty salon, dedicated to transforming
               your beauty dreams into reality. Experience the art of elegance.
             </p>
-            <div className="flex gap-4">
+            <div className="flex gap-3">
               {[
                 { icon: InstagramIcon, href: siteConfig.social.instagram, label: "Instagram" },
                 { icon: FacebookIcon, href: siteConfig.social.facebook, label: "Facebook" },
@@ -61,7 +72,7 @@ export default function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={social.label}
-                  className="w-10 h-10 border border-white/20 flex items-center justify-center text-white/60 hover:border-gold hover:text-gold hover:bg-gold/10 transition-all duration-300"
+                  className="w-10 h-10 border border-white/20 rounded-xl flex items-center justify-center text-white/60 hover:border-gold hover:text-gold hover:bg-gold/10 transition-all duration-300"
                 >
                   <social.icon className="w-4 h-4" />
                 </a>
@@ -111,7 +122,7 @@ export default function Footer() {
             <ul className="space-y-4">
               <li className="flex items-start gap-3">
                 <MapPin className="w-4 h-4 text-gold mt-1 flex-shrink-0" />
-                <span className="text-white/60 text-sm">{siteConfig.address}</span>
+                <span className="text-white/60 text-sm break-words">{siteConfig.address}</span>
               </li>
               <li className="flex items-center gap-3">
                 <Phone className="w-4 h-4 text-gold flex-shrink-0" />
@@ -126,7 +137,7 @@ export default function Footer() {
                 <Mail className="w-4 h-4 text-gold flex-shrink-0" />
                 <a
                   href={`mailto:${siteConfig.email}`}
-                  className="text-white/60 hover:text-gold transition-colors text-sm"
+                  className="text-white/60 hover:text-gold transition-colors text-sm break-all"
                 >
                   {siteConfig.email}
                 </a>
@@ -146,8 +157,8 @@ export default function Footer() {
       {/* Bottom Bar */}
       <div className="border-t border-white/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <p className="text-white/40 text-sm text-center md:text-left">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+            <p className="text-white/40 text-sm text-center sm:text-left">
               © {new Date().getFullYear()} Kiran Beauty Salon. All rights reserved.
             </p>
             <div className="flex items-center gap-6 text-white/40 text-sm">
@@ -162,23 +173,30 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Scroll to Top */}
-      <motion.button
-        onClick={scrollToTop}
-        className="fixed bottom-8 right-8 w-12 h-12 bg-gold text-primary flex items-center justify-center z-50 hover:bg-gold-light transition-colors shadow-gold"
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.9 }}
-        aria-label="Scroll to top"
-      >
-        <ArrowUp className="w-5 h-5" />
-      </motion.button>
+      {/* Scroll to Top - only shows after scrolling */}
+      <AnimatePresence>
+        {showScrollTop && (
+          <motion.button
+            initial={{ opacity: 0, scale: 0.8, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.8, y: 20 }}
+            onClick={scrollToTop}
+            className="fixed bottom-24 sm:bottom-8 right-4 sm:right-8 w-12 h-12 bg-gold text-primary rounded-xl flex items-center justify-center z-50 hover:bg-gold-light transition-colors shadow-gold"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            aria-label="Scroll to top"
+          >
+            <ArrowUp className="w-5 h-5" />
+          </motion.button>
+        )}
+      </AnimatePresence>
 
       {/* WhatsApp Floating Button */}
       <motion.a
         href={`https://wa.me/${siteConfig.whatsapp.replace(/\s/g, "").replace("+", "")}`}
         target="_blank"
         rel="noopener noreferrer"
-        className="fixed bottom-8 left-8 w-14 h-14 bg-green-500 text-white rounded-full flex items-center justify-center z-50 shadow-lg hover:bg-green-600 transition-colors"
+        className="fixed bottom-4 sm:bottom-8 left-4 sm:left-8 w-14 h-14 bg-green-500 text-white rounded-2xl flex items-center justify-center z-50 shadow-lg hover:bg-green-600 transition-all duration-300 hover:shadow-xl hover:shadow-green-500/20"
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
         aria-label="Chat on WhatsApp"
